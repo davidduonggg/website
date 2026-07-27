@@ -12,6 +12,10 @@ export type ResumeMetadata = {
   originalName: string;
 };
 
+export function blobCommandOptions() {
+  return process.env.BLOB_READ_WRITE_TOKEN ? { token: process.env.BLOB_READ_WRITE_TOKEN } : {};
+}
+
 async function streamToText(stream: ReadableStream<Uint8Array>) {
   const reader = stream.getReader();
   const decoder = new TextDecoder();
@@ -37,6 +41,7 @@ export async function getLatestResume() {
     const latest = await get(LATEST_RESUME_PATH, {
       access: "public",
       useCache: false,
+      ...blobCommandOptions(),
     });
 
     if (!latest || latest.statusCode !== 200) {

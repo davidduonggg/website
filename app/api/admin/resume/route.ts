@@ -1,5 +1,5 @@
 import { put } from "@vercel/blob";
-import { LATEST_RESUME_PATH, type ResumeMetadata } from "@/lib/resume";
+import { blobCommandOptions, LATEST_RESUME_PATH, type ResumeMetadata } from "@/lib/resume";
 import { requireResumeAdminRequest } from "@/lib/admin-auth";
 
 export const dynamic = "force-dynamic";
@@ -45,6 +45,7 @@ export async function POST(request: Request) {
     addRandomSuffix: true,
     contentType: "application/pdf",
     cacheControlMaxAge: 31536000,
+    ...blobCommandOptions(),
   });
   const metadata: ResumeMetadata = {
     url: resumeBlob.url,
@@ -60,6 +61,7 @@ export async function POST(request: Request) {
     allowOverwrite: true,
     contentType: "application/json",
     cacheControlMaxAge: 60,
+    ...blobCommandOptions(),
   });
 
   return Response.json({ resume: metadata });
