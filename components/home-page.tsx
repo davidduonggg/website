@@ -4,42 +4,47 @@ import { useEffect } from "react";
 import { animate, stagger } from "animejs";
 import { SignalField } from "@/components/signal-field";
 
-const projects = [
+const experience = [
   {
-    title: "Interface Systems",
+    title: "First American",
+    role: "Data Engineer Intern",
+    meta: "June 2026 - Present",
     description:
-      "Product surfaces that turn messy workflows into sharp, legible tools with a clear path from intent to action.",
-    tags: ["Product", "Systems", "UX"],
+      "Building data validation and replication systems across React, FastAPI, PostgreSQL, DuckDB, BigQuery, Pub/Sub, Dataflow, and Cloud Run.",
   },
   {
-    title: "Applied AI",
+    title: "Temco Logistics",
+    role: "Data Engineer (BI) Intern",
+    meta: "March 2026 - June 2026",
     description:
-      "Experiments and utilities that make model behavior inspectable, useful, and grounded in real user tasks.",
-    tags: ["AI", "Tools", "Research"],
-  },
-  {
-    title: "Web Craft",
-    description:
-      "Fast, expressive sites built with careful motion, strong typography, and deployment discipline.",
-    tags: ["Next.js", "Motion", "Vercel"],
+      "Migrated legacy records with Python and Spark in Databricks, refactored ingestion services, optimized runtimes, and added CI test coverage.",
   },
 ];
 
-const writing = [
+const skills = [
   {
-    date: "Now",
-    title: "Designing interfaces that feel calm under pressure",
-    type: "Essay",
+    group: "Languages",
+    items: ["Python", "Java", "Go", "SQL", "TypeScript", "JavaScript", "Bash"],
   },
   {
-    date: "Soon",
-    title: "Notes on useful AI products and where they still fall short",
-    type: "Notes",
+    group: "Data",
+    items: ["Apache Spark", "Apache Arrow", "Delta Lake", "Parquet", "PostgreSQL", "DuckDB", "SQL Server"],
   },
   {
-    date: "Draft",
-    title: "A personal operating manual for building in public",
-    type: "Journal",
+    group: "Frameworks",
+    items: ["FastAPI", "Node.js", "Express.js", "React"],
+  },
+  {
+    group: "Cloud",
+    items: ["Databricks", "GCP Pub/Sub", "Cloud Run", "Dataflow", "BigQuery", "Azure Blob Storage", "Azure SQL Server", "Azure Key Vault"],
+  },
+  {
+    group: "Tools",
+    items: ["Git", "GitHub Actions", "Docker", "Linux", "Cursor", "Codex"],
+  },
+  {
+    group: "ML",
+    items: ["PyTorch"],
   },
 ];
 
@@ -65,32 +70,32 @@ export function HomePage() {
 
   return (
     <main className="site-shell">
+      <SignalField />
       <nav className="site-nav" aria-label="Primary navigation">
         <div className="nav-inner">
           <a className="brand" href="#top" aria-label="David Duong home">
-            <span className="brand-mark">D</span>
             <span>David Duong</span>
           </a>
           <div className="nav-links">
-            <a href="#work">Work</a>
-            <a href="#about">About</a>
-            <a href="#writing">Writing</a>
+            <a href="#experience">Experience</a>
+            <a href="#skills">Skills</a>
+            <a className="resume-link" href="/David_Duong_Resume.pdf" target="_blank" rel="noreferrer">
+              Resume
+            </a>
             <a href="#contact">Contact</a>
           </div>
         </div>
       </nav>
 
       <section className="hero" id="top">
-        <SignalField />
         <div className="hero-content">
-          <p className="kicker reveal">Personal website in progress</p>
           <h1 className="reveal">David Duong</h1>
           <p className="hero-copy reveal">
-            I build crisp product experiences, AI-fluent tools, and web systems with enough motion to feel alive.
+            I build backend systems, data platforms, and data infrastructure.
           </p>
           <div className="hero-actions reveal">
-            <a className="action primary" href="#work">
-              See selected work
+            <a className="action primary" href="#experience">
+              See experience
             </a>
             <a className="action" href="#contact">
               Get in touch
@@ -103,83 +108,63 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="section" id="work">
+      <section className="section" id="experience">
         <div className="section-header reveal">
           <div>
-            <p className="eyebrow">Selected work</p>
-            <h2>Systems with a pulse</h2>
+            <p className="eyebrow">Experience</p>
+            <h2>Experience</h2>
           </div>
-          <p className="section-intro">
-            The site starts with placeholder project categories so the design can move while the final project list is assembled.
-          </p>
         </div>
 
-        <div className="project-grid">
-          {projects.map((project, index) => (
-            <article className="project-card reveal" key={project.title}>
-              <div className="project-number">{String(index + 1).padStart(2, "0")}</div>
-              <h3>{project.title}</h3>
-              <p>{project.description}</p>
-              <div className="project-meta">
-                {project.tags.map((tag) => (
-                  <span key={tag}>{tag}</span>
-                ))}
+        <div className="timeline">
+          {experience.map((item, index) => (
+            <article className="timeline-item reveal" key={item.title}>
+              <div className="timeline-marker" aria-hidden="true">
+                <span>{String(index + 1).padStart(2, "0")}</span>
+              </div>
+              <div className="timeline-content">
+                <p className="experience-date">{item.meta}</p>
+                <h3>{item.title}</h3>
+                <p className="experience-role">{item.role}</p>
+                <p>{item.description}</p>
               </div>
             </article>
           ))}
         </div>
       </section>
 
-      <section className="about-band" id="about">
-        <div className="about-layout">
-          <p className="about-copy reveal">
-            A technical, atmospheric personal site built around typography, spatial graphics, and direct project storytelling.
-          </p>
-          <div className="stats reveal" aria-label="Site priorities">
-            <div className="stat">
-              <strong>01</strong>
-              <span>Fast enough to keep the motion from becoming the product.</span>
-            </div>
-            <div className="stat">
-              <strong>02</strong>
-              <span>Clear enough for recruiters, detailed enough for engineers.</span>
-            </div>
-            <div className="stat">
-              <strong>03</strong>
-              <span>Ready for Vercel previews and production deploys from main.</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="section" id="writing">
+      <section className="section" id="skills">
         <div className="section-header reveal">
           <div>
-            <p className="eyebrow">Writing</p>
-            <h2>Notes and signals</h2>
+            <p className="eyebrow">Skills</p>
+            <h2>Tools I build with</h2>
           </div>
           <p className="section-intro">
-            Writing is included as a first-class section so future essays can drop into the site without another redesign.
+            Languages, frameworks, data systems, cloud platforms, and developer tools from my current technical stack.
           </p>
         </div>
-        <div className="writing-list">
-          {writing.map((item) => (
-            <article className="writing-item reveal" key={item.title}>
-              <time>{item.date}</time>
-              <h3>{item.title}</h3>
-              <span>{item.type}</span>
-            </article>
+
+        <div className="skills-list">
+          {skills.map((skillGroup) => (
+            <section className="skill-group reveal" key={skillGroup.group} aria-labelledby={`skill-${skillGroup.group.toLowerCase()}`}>
+              <h3 id={`skill-${skillGroup.group.toLowerCase()}`}>{skillGroup.group}</h3>
+              <div>
+                {skillGroup.items.map((skill) => (
+                  <span key={skill}>{skill}</span>
+                ))}
+              </div>
+            </section>
           ))}
         </div>
       </section>
 
       <section className="section contact" id="contact">
         <div className="contact-panel reveal">
-          <h2>Build the next pass.</h2>
+          <h2>Let&apos;s work together!</h2>
           <div className="contact-links">
-            <a href="mailto:hello@example.com">hello@example.com</a>
+            <a href="mailto:davidduonggg@gmail.com">davidduonggg@gmail.com</a>
             <a href="https://github.com/davidduonggg">github.com/davidduonggg</a>
-            <a href="https://www.linkedin.com/">LinkedIn</a>
+            <a href="https://www.linkedin.com/in/dduong7/">linkedin.com/in/dduong7</a>
           </div>
         </div>
       </section>
