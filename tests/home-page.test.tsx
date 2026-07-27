@@ -8,11 +8,11 @@ vi.mock("@/components/signal-field", () => ({
 
 describe("HomePage", () => {
   it("renders the primary personal site sections", () => {
-    render(<HomePage />);
+    render(<HomePage resumeHref="https://example.com/current-resume.pdf" />);
 
     expect(screen.getByRole("heading", { name: "David Duong" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "See experience" })).toHaveAttribute("href", "#experience");
-    expect(screen.getByRole("link", { name: "Resume" })).toHaveAttribute("href", "/resume");
+    expect(screen.getByRole("link", { name: "Resume" })).toHaveAttribute("href", "https://example.com/current-resume.pdf");
     expect(screen.getByRole("link", { name: "Resume" })).toHaveAttribute("target", "_blank");
     expect(screen.getByRole("heading", { name: "Experience" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Tools I build with" })).toBeInTheDocument();

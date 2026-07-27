@@ -100,7 +100,7 @@ function ContactIcon({ name }: { name: ContactIconName }) {
   );
 }
 
-export function HomePage() {
+export function HomePage({ resumeHref = "/resume" }: { resumeHref?: string }) {
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -131,7 +131,7 @@ export function HomePage() {
           <div className="nav-links">
             <a href="#experience">Experience</a>
             <a href="#skills">Skills</a>
-            <a className="resume-link" href="/resume" target="_blank" rel="noreferrer">
+            <a className="resume-link" href={resumeHref} target="_blank" rel="noreferrer">
               Resume
             </a>
             <a href="#contact">Contact</a>
