@@ -112,9 +112,7 @@ select {
 }
 
 .resume-link {
-  border: 1px solid rgba(241, 240, 235, 0.16);
-  padding: 8px 11px;
-  background: rgba(241, 240, 235, 0.055);
+  color: inherit;
 }
 
 .hero {
@@ -450,10 +448,6 @@ select {
 
   .nav-links a:not(.resume-link) {
     display: none;
-  }
-
-  .resume-link {
-    padding: 8px 10px;
   }
 
   .hero {

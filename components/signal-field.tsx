@@ -32,6 +32,39 @@ export function SignalField() {
     const root = new THREE.Group();
     scene.add(root);
 
+    const backgroundGeometry = new THREE.BufferGeometry();
+    const backgroundPositions: number[] = [];
+    const backgroundColors: number[] = [];
+    const brightStar = new THREE.Color("#ffffff");
+    const dimStar = new THREE.Color("#5f6361");
+
+    for (let index = 0; index < 1800; index += 1) {
+      const distance = Math.pow(Math.random(), 0.42);
+      const angle = Math.random() * Math.PI * 2;
+      const radius = 10 + distance * 34;
+      const x = Math.cos(angle) * radius + (Math.random() - 0.5) * 8;
+      const y = Math.sin(angle) * radius * 0.58 + (Math.random() - 0.5) * 18;
+      const z = -8 - Math.random() * 42;
+      const brightness = Math.random() > 0.86 ? 0.05 : 0.55 + Math.random() * 0.35;
+      const shade = brightStar.clone().lerp(dimStar, brightness);
+
+      backgroundPositions.push(x, y, z);
+      backgroundColors.push(shade.r, shade.g, shade.b);
+    }
+
+    backgroundGeometry.setAttribute("position", new THREE.Float32BufferAttribute(backgroundPositions, 3));
+    backgroundGeometry.setAttribute("color", new THREE.Float32BufferAttribute(backgroundColors, 3));
+    const backgroundMaterial = new THREE.PointsMaterial({
+      size: 0.032,
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.72,
+      depthWrite: false,
+      sizeAttenuation: true,
+    });
+    const backgroundParticles = new THREE.Points(backgroundGeometry, backgroundMaterial);
+    scene.add(backgroundParticles);
+
     const lineMaterial = new THREE.LineBasicMaterial({
       color: "#ffffff",
       transparent: true,
@@ -71,7 +104,7 @@ export function SignalField() {
     const white = new THREE.Color("#ffffff");
     const grey = new THREE.Color("#8f9492");
 
-    for (let index = 0; index < 620; index += 1) {
+    for (let index = 0; index < 960; index += 1) {
       const angle = Math.random() * Math.PI * 2;
       const radius = Math.pow(Math.random(), 0.62) * 9.5;
       const x = Math.cos(angle) * radius + (Math.random() - 0.5) * 0.6;
@@ -138,6 +171,8 @@ export function SignalField() {
       frame += 0.008;
       root.rotation.y = frame * 0.32 + pointer.x * 0.24;
       root.rotation.x = Math.sin(frame * 0.8) * 0.16 + pointer.y * 0.18;
+      backgroundParticles.rotation.y = frame * 0.035 + pointer.x * 0.025;
+      backgroundParticles.rotation.x = Math.sin(frame * 0.5) * 0.018 + pointer.y * 0.025;
       squiggles.forEach((line, index) => {
         const offset = index * 0.32;
         line.rotation.x += Math.sin(frame + offset) * 0.0009;
@@ -169,6 +204,8 @@ export function SignalField() {
       squiggles.forEach((line) => line.geometry.dispose());
       lineMaterial.dispose();
       ghostMaterial.dispose();
+      backgroundGeometry.dispose();
+      backgroundMaterial.dispose();
       particleGeometry.dispose();
       particleMaterial.dispose();
       halo.geometry.dispose();
