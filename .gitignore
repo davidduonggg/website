@@ -19,3 +19,6 @@ playwright-report/
 .env
 .env.*
 !.env.example
+
+# Vercel local project link
+.vercel/
