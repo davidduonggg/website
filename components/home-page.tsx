@@ -48,6 +48,58 @@ const skills = [
   },
 ];
 
+type ContactIconName = "email" | "github" | "linkedin";
+
+const contactLinks: Array<{
+  label: string;
+  href: string;
+  icon: ContactIconName;
+}> = [
+  {
+    label: "Email",
+    href: "mailto:davidduonggg@gmail.com",
+    icon: "email",
+  },
+  {
+    label: "GitHub",
+    href: "https://github.com/davidduonggg",
+    icon: "github",
+  },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/dduong7/",
+    icon: "linkedin",
+  },
+];
+
+function ContactIcon({ name }: { name: ContactIconName }) {
+  if (name === "email") {
+    return (
+      <svg aria-hidden="true" viewBox="0 0 24 24">
+        <path d="M4.75 6.75h14.5v10.5H4.75z" />
+        <path d="m5.25 7.25 6.75 5 6.75-5" />
+      </svg>
+    );
+  }
+
+  if (name === "github") {
+    return (
+      <svg className="contact-icon-fill" aria-hidden="true" viewBox="0 0 24 24">
+        <path d="M12 2.75a9.25 9.25 0 0 0-2.93 18.03c.46.08.63-.2.63-.44v-1.62c-2.56.56-3.1-1.09-3.1-1.09-.42-1.07-1.02-1.35-1.02-1.35-.84-.57.06-.56.06-.56.93.07 1.42.96 1.42.96.82 1.41 2.15 1 2.68.77.08-.6.32-1 .58-1.23-2.04-.23-4.19-1.02-4.19-4.54 0-1 .36-1.82.95-2.46-.1-.23-.41-1.17.09-2.43 0 0 .78-.25 2.55.94A8.7 8.7 0 0 1 12 7.44c.79 0 1.58.11 2.32.31 1.77-1.19 2.55-.94 2.55-.94.5 1.26.19 2.2.09 2.43.59.64.95 1.46.95 2.46 0 3.53-2.15 4.31-4.2 4.54.33.29.63.85.63 1.72v2.38c0 .24.17.53.64.44A9.25 9.25 0 0 0 12 2.75Z" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24">
+      <path d="M6.75 9.75v8.5" />
+      <path d="M6.75 6.75v.02" />
+      <path d="M11 18.25v-8.5" />
+      <path d="M11 13.5c0-2.48 1.42-3.95 3.45-3.95 1.92 0 2.8 1.25 2.8 3.52v5.18" />
+    </svg>
+  );
+}
+
 export function HomePage() {
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -162,9 +214,11 @@ export function HomePage() {
         <div className="contact-panel reveal">
           <h2>Let&apos;s work together!</h2>
           <div className="contact-links">
-            <a href="mailto:davidduonggg@gmail.com">davidduonggg@gmail.com</a>
-            <a href="https://github.com/davidduonggg">github.com/davidduonggg</a>
-            <a href="https://www.linkedin.com/in/dduong7/">linkedin.com/in/dduong7</a>
+            {contactLinks.map((link) => (
+              <a key={link.label} href={link.href} aria-label={link.label} title={link.label}>
+                <ContactIcon name={link.icon} />
+              </a>
+            ))}
           </div>
         </div>
       </section>

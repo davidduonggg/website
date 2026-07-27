@@ -17,15 +17,15 @@ describe("HomePage", () => {
     expect(screen.getByRole("heading", { name: "Experience" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Tools I build with" })).toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: "Notes and signals" })).not.toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "github.com/davidduonggg" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "GitHub" })).toHaveAttribute(
       "href",
       "https://github.com/davidduonggg",
     );
-    expect(screen.getByRole("link", { name: "davidduonggg@gmail.com" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "Email" })).toHaveAttribute(
       "href",
       "mailto:davidduonggg@gmail.com",
     );
-    expect(screen.getByRole("link", { name: "linkedin.com/in/dduong7" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "LinkedIn" })).toHaveAttribute(
       "href",
       "https://www.linkedin.com/in/dduong7/",
     );
