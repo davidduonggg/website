@@ -49,12 +49,23 @@ npm run vercel:deploy:production
 
 GitHub Actions includes CI for typecheck, lint, unit tests, build, and Playwright E2E. Vercel preview and production deploy jobs run when `VERCEL_TOKEN`, `VERCEL_ORG_ID`, and `VERCEL_PROJECT_ID` are configured as repository secrets.
 
+## Resume Uploads
+
+The public Resume nav link points at `/resume`. That route redirects to the latest resume uploaded to Vercel Blob, and falls back to `public/David_Duong_Resume.pdf` when Blob metadata is not available.
+
+To enable uploads:
+
+1. Create a Vercel Blob store connected to this Vercel project.
+2. Make sure `BLOB_READ_WRITE_TOKEN` is available to the environments where uploads should work.
+3. Open `/admin/resume` from a Vercel-authenticated deployment URL, not from the public production alias.
+
+The admin upload route is intentionally disabled on the public production domain. Vercel Authentication with Standard Protection protects preview and generated deployment URLs while keeping the public portfolio URL open.
+
 ## Planning
 
 - `docs/website-plan.md`: product, content, motion, and deployment plan
 
 ## Next Steps
 
-1. Replace placeholder contact details with real links.
-2. Replace placeholder project categories with real project entries.
-3. Link the GitHub repository to Vercel and configure the deployment secrets.
+1. Configure the Vercel Blob store for resume uploads.
+2. Add automated resume parsing if the site should update experience and skills from future PDFs.

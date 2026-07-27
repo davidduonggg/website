@@ -460,6 +460,155 @@ select {
   transform: translateY(-2px);
 }
 
+.admin-shell {
+  position: relative;
+  z-index: 1;
+  width: min(100% - 32px, var(--max));
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 96px 0;
+}
+
+.admin-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 0.72fr) minmax(280px, 0.45fr);
+  gap: 42px;
+  align-items: end;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 42px;
+}
+
+.admin-copy h1 {
+  max-width: 780px;
+  margin: 0;
+  font-family: "DIN Condensed", "Avenir Next Condensed", sans-serif;
+  font-size: clamp(4rem, 9vw, 8rem);
+  line-height: 0.86;
+  text-transform: uppercase;
+}
+
+.admin-copy p:last-child {
+  max-width: 620px;
+  margin: 24px 0 0;
+  color: var(--muted);
+  font-size: 1.02rem;
+  line-height: 1.65;
+}
+
+.admin-back {
+  display: inline-flex;
+  margin-bottom: 30px;
+  color: var(--quiet);
+  font-size: 0.85rem;
+  transition: color 180ms var(--ease);
+}
+
+.admin-back:hover {
+  color: var(--text);
+}
+
+.resume-upload {
+  display: grid;
+  gap: 12px;
+}
+
+.file-drop {
+  display: grid;
+  min-height: 96px;
+  place-items: center;
+  border: 1px dashed rgba(241, 240, 235, 0.28);
+  padding: 18px;
+  color: var(--muted);
+  cursor: pointer;
+  transition:
+    border-color 180ms var(--ease),
+    color 180ms var(--ease),
+    background 180ms var(--ease);
+}
+
+.file-drop:hover {
+  border-color: rgba(241, 240, 235, 0.5);
+  background: rgba(241, 240, 235, 0.04);
+  color: var(--text);
+}
+
+.file-drop input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.resume-upload button,
+.admin-preview a {
+  display: inline-flex;
+  min-height: 46px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(207, 214, 210, 0.72);
+  border-radius: 2px;
+  padding: 0 16px;
+  background: var(--accent);
+  color: var(--ink);
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    opacity 180ms var(--ease),
+    transform 180ms var(--ease);
+}
+
+.resume-upload button:disabled {
+  cursor: wait;
+  opacity: 0.62;
+}
+
+.resume-upload button:not(:disabled):hover,
+.admin-preview a:hover {
+  transform: translateY(-2px);
+}
+
+.upload-status {
+  min-height: 24px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.upload-status.error {
+  color: #f2a6a6;
+}
+
+.upload-status.success {
+  color: var(--accent-3);
+}
+
+.admin-preview {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.32fr) minmax(0, 0.68fr);
+  gap: 28px;
+  padding-top: 34px;
+}
+
+.admin-preview h2 {
+  margin: 0;
+  font-size: clamp(1.4rem, 2vw, 2rem);
+}
+
+.admin-preview p {
+  margin: 14px 0 22px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.admin-preview iframe {
+  width: 100%;
+  min-height: 680px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+}
+
 .reveal {
   opacity: 0;
   transform: translateY(18px);
@@ -490,7 +639,9 @@ select {
   }
 
   .section-header,
-  .contact-panel {
+  .contact-panel,
+  .admin-panel,
+  .admin-preview {
     grid-template-columns: 1fr;
   }
 

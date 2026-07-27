@@ -131,7 +131,7 @@ export function HomePage() {
           <div className="nav-links">
             <a href="#experience">Experience</a>
             <a href="#skills">Skills</a>
-            <a className="resume-link" href="/David_Duong_Resume.pdf" target="_blank" rel="noreferrer">
+            <a className="resume-link" href="/resume" target="_blank" rel="noreferrer">
               Resume
             </a>
             <a href="#contact">Contact</a>
