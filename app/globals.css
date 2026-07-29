@@ -138,8 +138,8 @@ select {
   pointer-events: none;
   content: "";
   background:
-    radial-gradient(circle at 72% 46%, transparent 0 22rem, rgba(0, 0, 0, 0.2) 36rem, rgba(0, 0, 0, 0.72) 100%),
-    linear-gradient(90deg, rgba(0, 0, 0, 0.62), transparent 44%, rgba(0, 0, 0, 0.18));
+    radial-gradient(circle at 72% 46%, transparent 0 24rem, rgba(0, 0, 0, 0.12) 38rem, rgba(0, 0, 0, 0.58) 100%),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.54), transparent 48%, rgba(0, 0, 0, 0.1));
 }
 
 .signal-canvas canvas {
