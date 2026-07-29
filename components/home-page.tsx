@@ -6,9 +6,15 @@ import { SignalField } from "@/components/signal-field";
 
 const experience = [
   {
+    title: "Ticketmaster",
+    role: "Software Engineer Intern",
+    meta: "September 2026 - December 2026",
+    description: "Incoming Fall 2026.",
+  },
+  {
     title: "First American",
     role: "Data Engineer Intern",
-    meta: "June 2026 - Present",
+    meta: "June 2026 - August 2026",
     description:
       "Building data validation and replication systems across React, FastAPI, PostgreSQL, DuckDB, BigQuery, Pub/Sub, Dataflow, and Cloud Run.",
   },
@@ -143,7 +149,7 @@ export function HomePage({ resumeHref = "/resume" }: { resumeHref?: string }) {
         <div className="hero-content">
           <h1 className="reveal">David Duong</h1>
           <p className="hero-copy reveal">
-            I build backend systems, data platforms, and data infrastructure.
+            I build backend systems, infrastructure, and data platforms.
           </p>
           <div className="hero-actions reveal">
             <a className="action primary" href="#experience">
