@@ -60,7 +60,7 @@ export function SignalField() {
 
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x000000, 0.022);
+    scene.fog = new THREE.FogExp2(0x000000, 0.012);
 
     const camera = new THREE.PerspectiveCamera(44, 1, 0.1, 120);
     camera.position.set(0, 0, 22);
@@ -88,14 +88,15 @@ export function SignalField() {
     const starPositions: number[] = [];
     const starColors: number[] = [];
 
-    for (let index = 0; index < 4600; index += 1) {
+    for (let index = 0; index < 6800; index += 1) {
       const angle = starRandom() * Math.PI * 2;
       const radius = 9 + Math.pow(starRandom(), 0.5) * 44;
       const x = Math.cos(angle) * radius + (starRandom() - 0.5) * 11;
       const y = Math.sin(angle) * radius * 0.52 + (starRandom() - 0.5) * 18;
       const z = -12 - starRandom() * 56;
       const sparkle = starRandom() > 0.78;
-      const shade = white.clone().lerp(smoke, sparkle ? starRandom() * 0.05 : 0.04 + starRandom() * 0.26);
+      const brightness = sparkle ? 0.96 + starRandom() * 0.04 : 0.78 + Math.pow(starRandom(), 1.8) * 0.2;
+      const shade = white.clone().lerp(pewter, 1 - brightness);
 
       starPositions.push(x, y, z);
       starColors.push(shade.r, shade.g, shade.b);
@@ -105,7 +106,7 @@ export function SignalField() {
     starGeometry.setAttribute("color", new THREE.Float32BufferAttribute(starColors, 3));
 
     const starMaterial = new THREE.PointsMaterial({
-      size: 0.18,
+      size: 0.29,
       map: particleTexture ?? undefined,
       vertexColors: true,
       transparent: true,
@@ -113,56 +114,10 @@ export function SignalField() {
       depthWrite: false,
       blending: THREE.AdditiveBlending,
       sizeAttenuation: true,
+      fog: false,
     });
     const stars = new THREE.Points(starGeometry, starMaterial);
     scene.add(stars);
-
-    const trailRandom = seededRandom(8127);
-    const trailGeometry = new THREE.BufferGeometry();
-    const trailPositions: number[] = [];
-    const trailColors: number[] = [];
-    const trailCenter = new THREE.Vector3(-7.4, 2.9, -38);
-
-    for (let trail = 0; trail < 230; trail += 1) {
-      const radius = 8 + Math.pow(trailRandom(), 0.72) * 35;
-      const start = trailRandom() * Math.PI * 2;
-      const arc = 0.08 + trailRandom() * 0.22;
-      const thickness = trailRandom() > 0.9 ? 2 : 1;
-      const brightness = 0.42 + trailRandom() * 0.5;
-      const yScale = 0.64 + trailRandom() * 0.16;
-      const z = trailCenter.z + (trailRandom() - 0.5) * 9;
-      const segments = 4 + Math.floor(trailRandom() * 4);
-
-      for (let stroke = 0; stroke < thickness; stroke += 1) {
-        const offset = (stroke - 0.5) * 0.038;
-        const shade = white.clone().lerp(smoke, 1 - brightness);
-
-        for (let segment = 0; segment < segments; segment += 1) {
-          const a = start + (segment / segments) * arc + offset;
-          const b = start + ((segment + 0.76) / segments) * arc + offset;
-          const startX = trailCenter.x + Math.cos(a) * radius;
-          const startY = trailCenter.y + Math.sin(a) * radius * yScale;
-          const endX = trailCenter.x + Math.cos(b) * radius;
-          const endY = trailCenter.y + Math.sin(b) * radius * yScale;
-
-          trailPositions.push(startX, startY, z, endX, endY, z);
-          trailColors.push(shade.r, shade.g, shade.b, shade.r, shade.g, shade.b);
-        }
-      }
-    }
-
-    trailGeometry.setAttribute("position", new THREE.Float32BufferAttribute(trailPositions, 3));
-    trailGeometry.setAttribute("color", new THREE.Float32BufferAttribute(trailColors, 3));
-
-    const trailMaterial = new THREE.LineBasicMaterial({
-      vertexColors: true,
-      transparent: true,
-      opacity: 0.62,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false,
-    });
-    const starTrails = new THREE.LineSegments(trailGeometry, trailMaterial);
-    scene.add(starTrails);
 
     const shellGeometry = new THREE.BufferGeometry();
     const shellPositions: number[] = [];
@@ -316,11 +271,8 @@ export function SignalField() {
       innerDust.rotation.x = Math.sin(frame * 0.8) * 0.07;
       stars.rotation.y = frame * 0.018 + pointer.x * 0.014;
       stars.rotation.x = Math.sin(frame * 0.45) * 0.012 + pointer.y * 0.014;
-      starTrails.rotation.z = frame * 0.012 + pointer.x * 0.01;
-      starTrails.rotation.x = Math.sin(frame * 0.34) * 0.006 + pointer.y * 0.008;
       shellMaterial.opacity = 0.96 + Math.sin(frame * 1.2) * 0.025;
-      starMaterial.opacity = 0.96 + Math.sin(frame * 0.9) * 0.035;
-      trailMaterial.opacity = 0.56 + Math.sin(frame * 0.7) * 0.08;
+      starMaterial.opacity = 0.98 + Math.sin(frame * 0.9) * 0.02;
       glowMaterial.opacity = 0.1 + Math.sin(frame * 1.1) * 0.025;
 
       renderer.render(scene, camera);
@@ -342,8 +294,6 @@ export function SignalField() {
       window.removeEventListener("resize", resize);
       starGeometry.dispose();
       starMaterial.dispose();
-      trailGeometry.dispose();
-      trailMaterial.dispose();
       shellGeometry.dispose();
       shellMaterial.dispose();
       innerGeometry.dispose();
