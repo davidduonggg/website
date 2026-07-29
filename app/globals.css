@@ -256,9 +256,9 @@ select {
   z-index: 1;
   border-top: 1px solid rgba(241, 240, 235, 0.1);
   background:
-    linear-gradient(180deg, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.9) 11rem, #000 28rem),
-    rgba(0, 0, 0, 0.92);
-  box-shadow: 0 -72px 120px rgba(0, 0, 0, 0.5);
+    linear-gradient(180deg, rgba(0, 0, 0, 0.46) 0%, rgba(0, 0, 0, 0.62) 11rem, rgba(0, 0, 0, 0.68) 100%),
+    rgba(0, 0, 0, 0.58);
+  box-shadow: 0 -64px 110px rgba(0, 0, 0, 0.34);
 }
 
 .section {
