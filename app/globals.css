@@ -251,7 +251,18 @@ select {
   background: linear-gradient(var(--accent), transparent);
 }
 
+.content-backdrop {
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid rgba(241, 240, 235, 0.1);
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.9) 11rem, #000 28rem),
+    rgba(0, 0, 0, 0.92);
+  box-shadow: 0 -72px 120px rgba(0, 0, 0, 0.5);
+}
+
 .section {
+  position: relative;
   width: min(100% - 32px, var(--max));
   margin: 0 auto;
   padding: 96px 0;

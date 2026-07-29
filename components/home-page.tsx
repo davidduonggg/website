@@ -166,68 +166,70 @@ export function HomePage({ resumeHref = "/resume" }: { resumeHref?: string }) {
         </div>
       </section>
 
-      <section className="section" id="experience">
-        <div className="section-header reveal">
-          <div>
-            <p className="eyebrow">Experience</p>
-            <h2>Experience</h2>
+      <div className="content-backdrop">
+        <section className="section" id="experience">
+          <div className="section-header reveal">
+            <div>
+              <p className="eyebrow">Experience</p>
+              <h2>Experience</h2>
+            </div>
           </div>
-        </div>
 
-        <div className="timeline">
-          {experience.map((item, index) => (
-            <article className="timeline-item reveal" key={item.title}>
-              <div className="timeline-marker" aria-hidden="true">
-                <span>{String(index + 1).padStart(2, "0")}</span>
-              </div>
-              <div className="timeline-content">
-                <p className="experience-date">{item.meta}</p>
-                <h3>{item.title}</h3>
-                <p className="experience-role">{item.role}</p>
-                <p>{item.description}</p>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="section" id="skills">
-        <div className="section-header reveal">
-          <div>
-            <p className="eyebrow">Skills</p>
-            <h2>Tools I build with</h2>
-          </div>
-          <p className="section-intro">
-            Languages, frameworks, data systems, cloud platforms, and developer tools from my current technical stack.
-          </p>
-        </div>
-
-        <div className="skills-list">
-          {skills.map((skillGroup) => (
-            <section className="skill-group reveal" key={skillGroup.group} aria-labelledby={`skill-${skillGroup.group.toLowerCase()}`}>
-              <h3 id={`skill-${skillGroup.group.toLowerCase()}`}>{skillGroup.group}</h3>
-              <div>
-                {skillGroup.items.map((skill) => (
-                  <span key={skill}>{skill}</span>
-                ))}
-              </div>
-            </section>
-          ))}
-        </div>
-      </section>
-
-      <section className="section contact" id="contact">
-        <div className="contact-panel reveal">
-          <h2>Let&apos;s work together!</h2>
-          <div className="contact-links">
-            {contactLinks.map((link) => (
-              <a key={link.label} href={link.href} aria-label={link.label} title={link.label}>
-                <ContactIcon name={link.icon} />
-              </a>
+          <div className="timeline">
+            {experience.map((item, index) => (
+              <article className="timeline-item reveal" key={item.title}>
+                <div className="timeline-marker" aria-hidden="true">
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                </div>
+                <div className="timeline-content">
+                  <p className="experience-date">{item.meta}</p>
+                  <h3>{item.title}</h3>
+                  <p className="experience-role">{item.role}</p>
+                  <p>{item.description}</p>
+                </div>
+              </article>
             ))}
           </div>
-        </div>
-      </section>
+        </section>
+
+        <section className="section" id="skills">
+          <div className="section-header reveal">
+            <div>
+              <p className="eyebrow">Skills</p>
+              <h2>Tools I build with</h2>
+            </div>
+            <p className="section-intro">
+              Languages, frameworks, data systems, cloud platforms, and developer tools from my current technical stack.
+            </p>
+          </div>
+
+          <div className="skills-list">
+            {skills.map((skillGroup) => (
+              <section className="skill-group reveal" key={skillGroup.group} aria-labelledby={`skill-${skillGroup.group.toLowerCase()}`}>
+                <h3 id={`skill-${skillGroup.group.toLowerCase()}`}>{skillGroup.group}</h3>
+                <div>
+                  {skillGroup.items.map((skill) => (
+                    <span key={skill}>{skill}</span>
+                  ))}
+                </div>
+              </section>
+            ))}
+          </div>
+        </section>
+
+        <section className="section contact" id="contact">
+          <div className="contact-panel reveal">
+            <h2>Let&apos;s work together!</h2>
+            <div className="contact-links">
+              {contactLinks.map((link) => (
+                <a key={link.label} href={link.href} aria-label={link.label} title={link.label}>
+                  <ContactIcon name={link.icon} />
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
+      </div>
     </main>
   );
 }
