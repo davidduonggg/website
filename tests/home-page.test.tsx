@@ -38,7 +38,7 @@ describe("HomePage", () => {
     expect(screen.getByRole("heading", { name: "Ticketmaster" })).toBeInTheDocument();
     expect(screen.getByText("Software Engineer Intern")).toBeInTheDocument();
     expect(screen.getByText("September 2026 - December 2026")).toBeInTheDocument();
-    expect(screen.getByText("Incoming Fall 2026.")).toBeInTheDocument();
+    expect(screen.getByText("Incoming on the Cassandra infrastructure team, Fall 2026.")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "First American" })).toBeInTheDocument();
     expect(screen.getByText("Data Engineer Intern")).toBeInTheDocument();
     expect(screen.getByText("June 2026 - August 2026")).toBeInTheDocument();
