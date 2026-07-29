@@ -9,7 +9,7 @@ const experience = [
     title: "Ticketmaster",
     role: "Software Engineer Intern",
     meta: "September 2026 - December 2026",
-    description: "Incoming Fall 2026.",
+    description: "Incoming on the Cassandra infrastructure team, Fall 2026.",
   },
   {
     title: "First American",
@@ -176,10 +176,10 @@ export function HomePage({ resumeHref = "/resume" }: { resumeHref?: string }) {
           </div>
 
           <div className="timeline">
-            {experience.map((item, index) => (
+            {experience.map((item) => (
               <article className="timeline-item reveal" key={item.title}>
                 <div className="timeline-marker" aria-hidden="true">
-                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  <span />
                 </div>
                 <div className="timeline-content">
                   <p className="experience-date">{item.meta}</p>

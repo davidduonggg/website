@@ -6,7 +6,10 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "David Duong | Personal Website",
   description:
-    "David Duong's personal website, featuring selected projects, writing, and contact links.",
+    "David Duong's personal website for backend systems, infrastructure, and data platforms.",
+  icons: {
+    icon: "/icon.svg",
+  },
   metadataBase: new URL("https://website-davidduonggg.vercel.app"),
 };
 

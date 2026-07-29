@@ -313,37 +313,39 @@ select {
 
 .timeline::before {
   position: absolute;
-  top: 12px;
-  bottom: 12px;
-  left: 34px;
+  top: 14px;
+  bottom: 14px;
+  left: 13px;
   width: 1px;
-  background: linear-gradient(transparent, rgba(207, 214, 210, 0.48), rgba(241, 240, 235, 0.12));
+  background: linear-gradient(transparent, rgba(207, 214, 210, 0.62), rgba(241, 240, 235, 0.14));
   content: "";
 }
 
 .timeline-item {
   position: relative;
   display: grid;
-  grid-template-columns: 68px minmax(0, 1fr);
-  gap: 30px;
+  grid-template-columns: 28px minmax(0, 1fr);
+  gap: 32px;
 }
 
 .timeline-marker {
   position: relative;
   z-index: 1;
   display: grid;
-  width: 68px;
-  height: 68px;
+  width: 28px;
+  height: 28px;
   place-items: center;
-  border-top: 1px solid rgba(241, 240, 235, 0.44);
-  border-bottom: 1px solid rgba(241, 240, 235, 0.16);
 }
 
 .timeline-marker span {
-  color: var(--accent);
-  font-family: "DIN Condensed", sans-serif;
-  font-size: 2.6rem;
-  line-height: 1;
+  width: 9px;
+  height: 9px;
+  border: 1px solid rgba(241, 240, 235, 0.9);
+  border-radius: 999px;
+  background: #f1f0eb;
+  box-shadow:
+    0 0 0 6px rgba(0, 0, 0, 0.72),
+    0 0 18px rgba(241, 240, 235, 0.42);
 }
 
 .timeline-content {
@@ -686,21 +688,22 @@ select {
   }
 
   .timeline::before {
-    left: 22px;
+    left: 10px;
   }
 
   .timeline-item {
-    grid-template-columns: 44px minmax(0, 1fr);
-    gap: 16px;
+    grid-template-columns: 22px minmax(0, 1fr);
+    gap: 18px;
   }
 
   .timeline-marker {
-    width: 44px;
-    height: 44px;
+    width: 22px;
+    height: 22px;
   }
 
   .timeline-marker span {
-    font-size: 1.7rem;
+    width: 8px;
+    height: 8px;
   }
 
   .timeline-content {
