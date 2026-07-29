@@ -88,14 +88,14 @@ export function SignalField() {
     const starPositions: number[] = [];
     const starColors: number[] = [];
 
-    for (let index = 0; index < 3900; index += 1) {
+    for (let index = 0; index < 4600; index += 1) {
       const angle = starRandom() * Math.PI * 2;
       const radius = 9 + Math.pow(starRandom(), 0.5) * 44;
       const x = Math.cos(angle) * radius + (starRandom() - 0.5) * 11;
       const y = Math.sin(angle) * radius * 0.52 + (starRandom() - 0.5) * 18;
       const z = -12 - starRandom() * 56;
-      const sparkle = starRandom() > 0.84;
-      const shade = white.clone().lerp(smoke, sparkle ? starRandom() * 0.08 : 0.1 + starRandom() * 0.28);
+      const sparkle = starRandom() > 0.78;
+      const shade = white.clone().lerp(smoke, sparkle ? starRandom() * 0.05 : 0.04 + starRandom() * 0.26);
 
       starPositions.push(x, y, z);
       starColors.push(shade.r, shade.g, shade.b);
@@ -105,11 +105,11 @@ export function SignalField() {
     starGeometry.setAttribute("color", new THREE.Float32BufferAttribute(starColors, 3));
 
     const starMaterial = new THREE.PointsMaterial({
-      size: 0.14,
+      size: 0.18,
       map: particleTexture ?? undefined,
       vertexColors: true,
       transparent: true,
-      opacity: 0.95,
+      opacity: 1,
       depthWrite: false,
       blending: THREE.AdditiveBlending,
       sizeAttenuation: true,
@@ -123,12 +123,12 @@ export function SignalField() {
     const trailColors: number[] = [];
     const trailCenter = new THREE.Vector3(-7.4, 2.9, -38);
 
-    for (let trail = 0; trail < 165; trail += 1) {
+    for (let trail = 0; trail < 230; trail += 1) {
       const radius = 8 + Math.pow(trailRandom(), 0.72) * 35;
       const start = trailRandom() * Math.PI * 2;
       const arc = 0.08 + trailRandom() * 0.22;
       const thickness = trailRandom() > 0.9 ? 2 : 1;
-      const brightness = 0.26 + trailRandom() * 0.52;
+      const brightness = 0.42 + trailRandom() * 0.5;
       const yScale = 0.64 + trailRandom() * 0.16;
       const z = trailCenter.z + (trailRandom() - 0.5) * 9;
       const segments = 4 + Math.floor(trailRandom() * 4);
@@ -157,7 +157,7 @@ export function SignalField() {
     const trailMaterial = new THREE.LineBasicMaterial({
       vertexColors: true,
       transparent: true,
-      opacity: 0.42,
+      opacity: 0.62,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
     });
@@ -319,8 +319,8 @@ export function SignalField() {
       starTrails.rotation.z = frame * 0.012 + pointer.x * 0.01;
       starTrails.rotation.x = Math.sin(frame * 0.34) * 0.006 + pointer.y * 0.008;
       shellMaterial.opacity = 0.96 + Math.sin(frame * 1.2) * 0.025;
-      starMaterial.opacity = 0.98 + Math.sin(frame * 0.9) * 0.02;
-      trailMaterial.opacity = 0.36 + Math.sin(frame * 0.7) * 0.06;
+      starMaterial.opacity = 0.96 + Math.sin(frame * 0.9) * 0.035;
+      trailMaterial.opacity = 0.56 + Math.sin(frame * 0.7) * 0.08;
       glowMaterial.opacity = 0.1 + Math.sin(frame * 1.1) * 0.025;
 
       renderer.render(scene, camera);
