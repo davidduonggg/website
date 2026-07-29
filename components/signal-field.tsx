@@ -3,6 +3,42 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
+function seededRandom(seed: number) {
+  let value = seed >>> 0;
+
+  return () => {
+    value = (value * 1664525 + 1013904223) >>> 0;
+    return value / 4294967296;
+  };
+}
+
+function createParticleTexture() {
+  const canvas = document.createElement("canvas");
+  const size = 64;
+  canvas.width = size;
+  canvas.height = size;
+
+  const context = canvas.getContext("2d");
+
+  if (!context) {
+    return null;
+  }
+
+  const gradient = context.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
+  gradient.addColorStop(0, "rgba(255,255,255,1)");
+  gradient.addColorStop(0.34, "rgba(255,255,255,0.72)");
+  gradient.addColorStop(0.7, "rgba(255,255,255,0.12)");
+  gradient.addColorStop(1, "rgba(255,255,255,0)");
+
+  context.fillStyle = gradient;
+  context.fillRect(0, 0, size, size);
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.needsUpdate = true;
+
+  return texture;
+}
+
 export function SignalField() {
   const hostRef = useRef<HTMLDivElement | null>(null);
 
@@ -15,131 +51,177 @@ export function SignalField() {
 
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x000000, 0.042);
+    scene.fog = new THREE.FogExp2(0x000000, 0.026);
 
-    const camera = new THREE.PerspectiveCamera(46, 1, 0.1, 100);
-    camera.position.set(0, 0, 18);
+    const camera = new THREE.PerspectiveCamera(44, 1, 0.1, 110);
+    camera.position.set(0, 0, 20);
 
     const renderer = new THREE.WebGLRenderer({
       alpha: true,
       antialias: true,
       preserveDrawingBuffer: true,
     });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.8));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.7));
     renderer.setClearColor(0x000000, 0);
     host.appendChild(renderer.domElement);
 
+    const particleTexture = createParticleTexture();
     const root = new THREE.Group();
     scene.add(root);
 
-    const backgroundGeometry = new THREE.BufferGeometry();
-    const backgroundPositions: number[] = [];
-    const backgroundColors: number[] = [];
-    const brightStar = new THREE.Color("#ffffff");
-    const dimStar = new THREE.Color("#5f6361");
+    const white = new THREE.Color("#ffffff");
+    const silver = new THREE.Color("#cfd6d2");
+    const smoke = new THREE.Color("#59605e");
 
-    for (let index = 0; index < 1800; index += 1) {
-      const distance = Math.pow(Math.random(), 0.42);
-      const angle = Math.random() * Math.PI * 2;
-      const radius = 10 + distance * 34;
-      const x = Math.cos(angle) * radius + (Math.random() - 0.5) * 8;
-      const y = Math.sin(angle) * radius * 0.58 + (Math.random() - 0.5) * 18;
-      const z = -8 - Math.random() * 42;
-      const brightness = Math.random() > 0.86 ? 0.05 : 0.55 + Math.random() * 0.35;
-      const shade = brightStar.clone().lerp(dimStar, brightness);
+    const farRandom = seededRandom(2319);
+    const farGeometry = new THREE.BufferGeometry();
+    const farPositions: number[] = [];
+    const farColors: number[] = [];
 
-      backgroundPositions.push(x, y, z);
-      backgroundColors.push(shade.r, shade.g, shade.b);
+    for (let index = 0; index < 2600; index += 1) {
+      const angle = farRandom() * Math.PI * 2;
+      const radius = 12 + Math.pow(farRandom(), 0.46) * 42;
+      const x = Math.cos(angle) * radius + (farRandom() - 0.5) * 10;
+      const y = Math.sin(angle) * radius * 0.48 + (farRandom() - 0.5) * 14;
+      const z = -12 - farRandom() * 52;
+      const brightness = farRandom() > 0.965 ? 0.08 : 0.48 + farRandom() * 0.44;
+      const shade = white.clone().lerp(smoke, brightness);
+
+      farPositions.push(x, y, z);
+      farColors.push(shade.r, shade.g, shade.b);
     }
 
-    backgroundGeometry.setAttribute("position", new THREE.Float32BufferAttribute(backgroundPositions, 3));
-    backgroundGeometry.setAttribute("color", new THREE.Float32BufferAttribute(backgroundColors, 3));
-    const backgroundMaterial = new THREE.PointsMaterial({
-      size: 0.032,
+    farGeometry.setAttribute("position", new THREE.Float32BufferAttribute(farPositions, 3));
+    farGeometry.setAttribute("color", new THREE.Float32BufferAttribute(farColors, 3));
+
+    const farMaterial = new THREE.PointsMaterial({
+      size: 0.09,
+      map: particleTexture ?? undefined,
       vertexColors: true,
       transparent: true,
-      opacity: 0.72,
+      opacity: 0.62,
       depthWrite: false,
+      blending: THREE.AdditiveBlending,
       sizeAttenuation: true,
     });
-    const backgroundParticles = new THREE.Points(backgroundGeometry, backgroundMaterial);
-    scene.add(backgroundParticles);
+    const farParticles = new THREE.Points(farGeometry, farMaterial);
+    scene.add(farParticles);
+
+    const dustRandom = seededRandom(7401);
+    const dustGeometry = new THREE.BufferGeometry();
+    const dustPositions: number[] = [];
+    const dustColors: number[] = [];
+
+    for (let index = 0; index < 1500; index += 1) {
+      const x = (dustRandom() - 0.5) * 42;
+      const wave = Math.sin(x * 0.34 + dustRandom() * 0.8) * 2.2;
+      const y = x * 0.075 + wave + (dustRandom() - 0.5) * 4.6;
+      const z = -18 + (dustRandom() - 0.5) * 18;
+      const shade = silver.clone().lerp(smoke, 0.36 + dustRandom() * 0.48);
+
+      dustPositions.push(x, y, z);
+      dustColors.push(shade.r, shade.g, shade.b);
+    }
+
+    dustGeometry.setAttribute("position", new THREE.Float32BufferAttribute(dustPositions, 3));
+    dustGeometry.setAttribute("color", new THREE.Float32BufferAttribute(dustColors, 3));
+
+    const dustMaterial = new THREE.PointsMaterial({
+      size: 0.12,
+      map: particleTexture ?? undefined,
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.16,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+      sizeAttenuation: true,
+    });
+    const dustParticles = new THREE.Points(dustGeometry, dustMaterial);
+    scene.add(dustParticles);
 
     const lineMaterial = new THREE.LineBasicMaterial({
       color: "#ffffff",
       transparent: true,
-      opacity: 0.7,
+      opacity: 0.56,
     });
     const ghostMaterial = new THREE.LineBasicMaterial({
       color: "#ffffff",
       transparent: true,
-      opacity: 0.2,
+      opacity: 0.16,
     });
-    const squiggles: THREE.Line[] = [];
+    const filaments: THREE.Line[] = [];
+    const filamentBases: THREE.Euler[] = [];
 
-    for (let strand = 0; strand < 10; strand += 1) {
+    for (let strand = 0; strand < 12; strand += 1) {
       const points: THREE.Vector3[] = [];
-      const phase = (strand / 10) * Math.PI * 2;
+      const phase = (strand / 12) * Math.PI * 2;
 
-      for (let index = 0; index <= 280; index += 1) {
-        const t = (index / 280) * Math.PI * 2;
-        const radius = 3.25 + Math.sin(t * 3 + phase) * 1.12 + Math.cos(t * 5 - phase) * 0.36;
-        const x = Math.cos(t + phase * 0.16) * radius;
-        const y = Math.sin(t * 2 + phase) * 1.36 + Math.cos(t * 4 + phase) * 0.4;
-        const z = Math.sin(t + phase * 0.34) * radius * 0.72;
+      for (let index = 0; index <= 340; index += 1) {
+        const t = (index / 340) * Math.PI * 2;
+        const curl = t + Math.sin(t * 2 + phase) * 0.16 + phase * 0.12;
+        const radius = 2.85 + Math.sin(t * 3 + phase) * 0.72 + Math.cos(t * 5 - phase) * 0.18;
+        const x = Math.cos(curl) * radius;
+        const y = Math.sin(t * 1.72 + phase) * 1.04 + Math.cos(t * 0.6 + phase) * 0.36;
+        const z = Math.sin(curl) * radius * 0.86 + Math.cos(t * 2.4 + phase) * 0.28;
 
         points.push(new THREE.Vector3(x, y, z));
       }
 
       const geometry = new THREE.BufferGeometry().setFromPoints(points);
-      const line = new THREE.Line(geometry, strand < 6 ? lineMaterial : ghostMaterial);
-      line.rotation.set(strand * 0.19, strand * 0.31, strand * 0.13);
-      squiggles.push(line);
+      const line = new THREE.Line(geometry, strand < 7 ? lineMaterial : ghostMaterial);
+      const baseRotation = new THREE.Euler(strand * 0.17, strand * 0.27, strand * 0.11);
+      line.rotation.copy(baseRotation);
+      filaments.push(line);
+      filamentBases.push(baseRotation);
       root.add(line);
     }
 
-    const particleGeometry = new THREE.BufferGeometry();
-    const particlePositions: number[] = [];
-    const particleColors: number[] = [];
-    const white = new THREE.Color("#ffffff");
-    const grey = new THREE.Color("#8f9492");
+    const coreRandom = seededRandom(9283);
+    const coreGeometry = new THREE.BufferGeometry();
+    const corePositions: number[] = [];
+    const coreColors: number[] = [];
+    const goldenAngle = Math.PI * (3 - Math.sqrt(5));
 
-    for (let index = 0; index < 960; index += 1) {
-      const angle = Math.random() * Math.PI * 2;
-      const radius = Math.pow(Math.random(), 0.62) * 9.5;
-      const x = Math.cos(angle) * radius + (Math.random() - 0.5) * 0.6;
-      const y = Math.sin(angle) * radius * 0.56 + (Math.random() - 0.5) * 4.8;
-      const z = (Math.random() - 0.5) * 8.5;
-      const shade = white.clone().lerp(grey, Math.min(radius / 9.5, 1) * 0.7);
+    for (let index = 0; index < 1200; index += 1) {
+      const radius = Math.pow(coreRandom(), 0.55) * 7.4;
+      const angle = index * goldenAngle + radius * 0.48 + (coreRandom() - 0.5) * 0.3;
+      const x = Math.cos(angle) * radius + (coreRandom() - 0.5) * 0.42;
+      const y = Math.sin(angle * 1.64) * 1.04 + Math.sin(radius * 0.92) * 0.58 + (coreRandom() - 0.5) * 1.7;
+      const z = Math.sin(angle) * radius * 0.78 + (coreRandom() - 0.5) * 2.2;
+      const shade = white.clone().lerp(silver, Math.min(radius / 7.4, 1) * 0.42);
 
-      particlePositions.push(x, y, z);
-      particleColors.push(shade.r, shade.g, shade.b);
+      corePositions.push(x, y, z);
+      coreColors.push(shade.r, shade.g, shade.b);
     }
 
-    particleGeometry.setAttribute("position", new THREE.Float32BufferAttribute(particlePositions, 3));
-    particleGeometry.setAttribute("color", new THREE.Float32BufferAttribute(particleColors, 3));
-    const particleMaterial = new THREE.PointsMaterial({
-      size: 0.04,
+    coreGeometry.setAttribute("position", new THREE.Float32BufferAttribute(corePositions, 3));
+    coreGeometry.setAttribute("color", new THREE.Float32BufferAttribute(coreColors, 3));
+
+    const coreMaterial = new THREE.PointsMaterial({
+      size: 0.075,
+      map: particleTexture ?? undefined,
       vertexColors: true,
       transparent: true,
-      opacity: 0.58,
+      opacity: 0.72,
       depthWrite: false,
+      blending: THREE.AdditiveBlending,
+      sizeAttenuation: true,
     });
-    const particles = new THREE.Points(particleGeometry, particleMaterial);
-    root.add(particles);
+    const coreParticles = new THREE.Points(coreGeometry, coreMaterial);
+    root.add(coreParticles);
 
-    const haloMaterial = new THREE.LineBasicMaterial({
+    const haloTexture = createParticleTexture();
+    const glowMaterial = new THREE.SpriteMaterial({
+      map: haloTexture ?? undefined,
       color: "#ffffff",
       transparent: true,
-      opacity: 0.14,
+      opacity: 0.11,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
     });
-    const haloCurve = new THREE.EllipseCurve(0, 0, 7.2, 2.05, 0, Math.PI * 2);
-    const halo = new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints(haloCurve.getPoints(220).map((point) => new THREE.Vector3(point.x, point.y, 0))),
-      haloMaterial,
-    );
-    halo.rotation.set(0.72, 0.28, -0.36);
-    root.add(halo);
+    const glow = new THREE.Sprite(glowMaterial);
+    glow.scale.set(8.8, 8.8, 1);
+    root.add(glow);
 
     const pointer = new THREE.Vector2(0, 0);
     let frame = 0;
@@ -150,17 +232,16 @@ export function SignalField() {
       const { width, height } = host.getBoundingClientRect();
       renderer.setSize(width, height);
       camera.aspect = width / Math.max(height, 1);
-      camera.position.z = width < 720 ? 22 : 18;
-      root.scale.setScalar(width < 720 ? 0.74 : 1);
-      root.position.x = width < 720 ? 2.3 : 4.2;
-      root.position.y = width < 720 ? 0.6 : 0.1;
+      camera.position.z = width < 720 ? 23 : 19.5;
+      root.scale.setScalar(width < 720 ? 0.56 : 1);
+      root.position.x = width < 720 ? 4.15 : 4.05;
+      root.position.y = width < 720 ? 2.58 : 0.08;
       camera.updateProjectionMatrix();
     };
 
     const move = (event: PointerEvent) => {
-      const rect = host.getBoundingClientRect();
-      pointer.x = (event.clientX - rect.left) / rect.width - 0.5;
-      pointer.y = (event.clientY - rect.top) / rect.height - 0.5;
+      pointer.x = event.clientX / Math.max(window.innerWidth, 1) - 0.5;
+      pointer.y = event.clientY / Math.max(window.innerHeight, 1) - 0.5;
     };
 
     const render = () => {
@@ -168,21 +249,26 @@ export function SignalField() {
         return;
       }
 
-      frame += 0.008;
-      root.rotation.y = frame * 0.32 + pointer.x * 0.24;
-      root.rotation.x = Math.sin(frame * 0.8) * 0.16 + pointer.y * 0.18;
-      backgroundParticles.rotation.y = frame * 0.035 + pointer.x * 0.025;
-      backgroundParticles.rotation.x = Math.sin(frame * 0.5) * 0.018 + pointer.y * 0.025;
-      squiggles.forEach((line, index) => {
-        const offset = index * 0.32;
-        line.rotation.x += Math.sin(frame + offset) * 0.0009;
-        line.rotation.y += 0.0018 + index * 0.00018;
-        line.scale.setScalar(1 + Math.sin(frame * 1.8 + offset) * 0.035);
+      frame += reducedMotion ? 0 : 0.007;
+      root.rotation.y = frame * 0.24 + pointer.x * 0.18;
+      root.rotation.x = Math.sin(frame * 0.72) * 0.11 + pointer.y * 0.12;
+      farParticles.rotation.y = frame * 0.018 + pointer.x * 0.012;
+      dustParticles.rotation.y = -frame * 0.026 + pointer.x * 0.02;
+      dustParticles.rotation.x = Math.sin(frame * 0.42) * 0.018 + pointer.y * 0.018;
+      coreParticles.rotation.y = -frame * 0.2;
+      coreParticles.rotation.x = Math.sin(frame * 0.9) * 0.09;
+      coreMaterial.opacity = 0.68 + Math.sin(frame * 1.4) * 0.05;
+      glowMaterial.opacity = 0.09 + Math.sin(frame * 1.1) * 0.025;
+      filaments.forEach((line, index) => {
+        const base = filamentBases[index];
+        const offset = index * 0.28;
+        line.rotation.set(
+          base.x + Math.sin(frame + offset) * 0.045,
+          base.y + frame * (0.12 + index * 0.004),
+          base.z + Math.cos(frame * 0.8 + offset) * 0.035,
+        );
+        line.scale.setScalar(1 + Math.sin(frame * 1.35 + offset) * 0.022);
       });
-      particles.rotation.y = -frame * 0.3;
-      particles.rotation.x = Math.sin(frame) * 0.16;
-      halo.rotation.z += 0.003;
-      halo.rotation.x = 0.72 + Math.sin(frame * 1.2) * 0.16;
 
       renderer.render(scene, camera);
 
@@ -192,24 +278,27 @@ export function SignalField() {
     };
 
     resize();
-    host.addEventListener("pointermove", move);
+    window.addEventListener("pointermove", move);
     window.addEventListener("resize", resize);
     render();
 
     return () => {
       running = false;
       cancelAnimationFrame(animationFrame);
-      host.removeEventListener("pointermove", move);
+      window.removeEventListener("pointermove", move);
       window.removeEventListener("resize", resize);
-      squiggles.forEach((line) => line.geometry.dispose());
+      filaments.forEach((line) => line.geometry.dispose());
       lineMaterial.dispose();
       ghostMaterial.dispose();
-      backgroundGeometry.dispose();
-      backgroundMaterial.dispose();
-      particleGeometry.dispose();
-      particleMaterial.dispose();
-      halo.geometry.dispose();
-      haloMaterial.dispose();
+      farGeometry.dispose();
+      farMaterial.dispose();
+      dustGeometry.dispose();
+      dustMaterial.dispose();
+      coreGeometry.dispose();
+      coreMaterial.dispose();
+      glowMaterial.dispose();
+      particleTexture?.dispose();
+      haloTexture?.dispose();
       renderer.dispose();
       renderer.domElement.remove();
     };
