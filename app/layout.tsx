@@ -4,7 +4,7 @@ import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "David Duong | Personal Website",
+  title: "David Duong",
   description:
     "David Duong's personal website for backend systems, infrastructure, and data platforms.",
   icons: {
