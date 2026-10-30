@@ -88,7 +88,7 @@ export function SignalField() {
       powerPreference: "high-performance",
     });
     renderer.outputColorSpace = THREE.SRGBColorSpace;
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.7));
+    renderer.setPixelRatio(1);
     renderer.setClearColor(0x000000, 0);
     host.appendChild(renderer.domElement);
 
@@ -321,15 +321,25 @@ export function SignalField() {
     const smoothedPointer = new THREE.Vector2(0, 0);
     let frame = 0;
     let animationFrame = 0;
+    let currentPixelRatio = 1;
+    let lastRenderTime = 0;
     let running = true;
 
     const resize = () => {
       const { width, height } = host.getBoundingClientRect();
-      renderer.setSize(width, height);
+      const maxPixelRatio = width < 720 ? 1.25 : 1.5;
+      const nextPixelRatio = Math.min(window.devicePixelRatio, maxPixelRatio);
+
+      if (nextPixelRatio !== currentPixelRatio) {
+        currentPixelRatio = nextPixelRatio;
+        renderer.setPixelRatio(currentPixelRatio);
+      }
+
+      renderer.setSize(width, height, false);
       camera.aspect = width / Math.max(height, 1);
       camera.position.z = width < 720 ? 22.5 : 19.5;
       root.scale.setScalar(width < 720 ? 0.43 : height < 800 ? 0.98 : 0.82);
-      root.position.x = width < 720 ? 3.15 : 4.2;
+      root.position.x = width < 720 ? 3.15 : width < 1024 ? 3.8 : 4.2;
       root.position.y = width < 720 ? 2.68 : 0.18;
       camera.updateProjectionMatrix();
     };
@@ -339,12 +349,23 @@ export function SignalField() {
       pointer.y = event.clientY / Math.max(window.innerHeight, 1) - 0.5;
     };
 
-    const render = () => {
-      if (!running) {
+    const render = (timestamp = performance.now()) => {
+      if (!running || document.hidden) {
         return;
       }
 
-      frame += reducedMotion ? 0 : 0.006;
+      const isPastHero = window.scrollY > window.innerHeight * 0.82;
+      const targetFrameDuration = isPastHero ? 1000 / 30 : 1000 / 60;
+      const elapsed = timestamp - lastRenderTime;
+
+      if (!reducedMotion && lastRenderTime > 0 && elapsed < targetFrameDuration - 1) {
+        animationFrame = requestAnimationFrame(render);
+        return;
+      }
+
+      const frameDelta = lastRenderTime === 0 ? 1 : Math.min(elapsed / (1000 / 60), 2);
+      lastRenderTime = timestamp;
+      frame += reducedMotion ? 0 : 0.006 * frameDelta;
       smoothedPointer.lerp(pointer, reducedMotion ? 1 : 0.045);
 
       const breath = 1 + Math.sin(frame * 1.1) * 0.018;
@@ -385,9 +406,19 @@ export function SignalField() {
       }
     };
 
+    const handleVisibilityChange = () => {
+      cancelAnimationFrame(animationFrame);
+
+      if (!document.hidden && running) {
+        lastRenderTime = 0;
+        render();
+      }
+    };
+
     const resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(host);
     window.addEventListener("pointermove", move);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
     resize();
     render();
 
@@ -396,6 +427,7 @@ export function SignalField() {
       cancelAnimationFrame(animationFrame);
       resizeObserver.disconnect();
       window.removeEventListener("pointermove", move);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
       backgroundGeometry.dispose();
       backgroundMaterial.dispose();
       midGeometry.dispose();

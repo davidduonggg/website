@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { animate, stagger } from "animejs";
+import Lenis from "lenis";
 import { SignalField } from "@/components/signal-field";
 
 const experience = [
@@ -120,6 +121,28 @@ function ContactIcon({ name }: { name: ContactIconName }) {
 }
 
 export function HomePage({ resumeHref = "/resume" }: { resumeHref?: string }) {
+  useEffect(() => {
+    if (typeof ResizeObserver === "undefined") {
+      return;
+    }
+
+    const lenis = new Lenis({
+      anchors: true,
+      autoRaf: true,
+      autoToggle: true,
+      lerp: 0.07,
+      smoothWheel: true,
+      syncTouch: false,
+      wheelMultiplier: 0.82,
+      stopInertiaOnNavigate: true,
+      respectReducedMotion: true,
+    });
+
+    return () => {
+      lenis.destroy();
+    };
+  }, []);
+
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
