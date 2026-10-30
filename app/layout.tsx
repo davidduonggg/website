@@ -5,8 +5,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "David Duong",
-  description:
-    "David Duong's personal website for backend systems, infrastructure, and data platforms.",
+  description: "David Duong builds backend systems, infrastructure, and data platforms.",
   icons: {
     icon: "/icon.svg",
   },

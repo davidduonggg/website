@@ -12,11 +12,12 @@ describe("HomePage", () => {
 
     expect(screen.getByRole("heading", { name: "David Duong" })).toBeInTheDocument();
     expect(screen.getByText("I build backend systems, infrastructure, and data platforms.")).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "See experience" })).toHaveAttribute("href", "#experience");
+    expect(screen.getByRole("link", { name: "View experience" })).toHaveAttribute("href", "#experience");
     expect(screen.getByRole("link", { name: "Resume" })).toHaveAttribute("href", "https://example.com/current-resume.pdf");
     expect(screen.getByRole("link", { name: "Resume" })).toHaveAttribute("target", "_blank");
     expect(screen.getByRole("heading", { name: "Experience" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Tools I build with" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Skills" })).toBeInTheDocument();
+    expect(screen.getByText(/B\.S\. Computer Science, UC Irvine/)).toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: "Notes and signals" })).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: "GitHub" })).toHaveAttribute(
       "href",
@@ -37,13 +38,12 @@ describe("HomePage", () => {
 
     expect(screen.getByRole("heading", { name: "Ticketmaster" })).toBeInTheDocument();
     expect(screen.getByText("Software Engineer Intern")).toBeInTheDocument();
-    expect(screen.getByText("September 2026 - December 2026")).toBeInTheDocument();
-    expect(screen.getByText("Incoming on the Cassandra infrastructure team, Fall 2026.")).toBeInTheDocument();
+    expect(screen.getByText("October 2026 - Present")).toBeInTheDocument();
+    expect(screen.getByText("Interning on the Cassandra infrastructure team.")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "First American" })).toBeInTheDocument();
-    expect(screen.getByText("Data Engineer Intern")).toBeInTheDocument();
     expect(screen.getByText("June 2026 - August 2026")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Temco Logistics" })).toBeInTheDocument();
-    expect(screen.getByText("Data Engineer (BI) Intern")).toBeInTheDocument();
+    expect(screen.getAllByText("Data Engineer Intern")).toHaveLength(2);
     expect(screen.getByText("March 2026 - June 2026")).toBeInTheDocument();
     expect(screen.queryByText("24M+ row comparisons")).not.toBeInTheDocument();
   });
@@ -52,9 +52,9 @@ describe("HomePage", () => {
     render(<HomePage />);
 
     expect(screen.getByRole("heading", { name: "Languages" })).toBeInTheDocument();
-    expect(screen.getByText("Python")).toBeInTheDocument();
-    expect(screen.getByText("Apache Spark")).toBeInTheDocument();
-    expect(screen.getByText("BigQuery")).toBeInTheDocument();
-    expect(screen.getByText("Docker")).toBeInTheDocument();
+    expect(screen.getByText(/Python, Go, SQL/)).toBeInTheDocument();
+    expect(screen.getByText(/Spark, Arrow, PostgreSQL/)).toBeInTheDocument();
+    expect(screen.getByText(/Databricks, Lakebase, Lakeflow/)).toBeInTheDocument();
+    expect(screen.getByText(/Git, GitHub Actions, Docker/)).toBeInTheDocument();
   });
 });

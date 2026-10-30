@@ -5,11 +5,11 @@ test("homepage renders content and the signal canvas", async ({ page }) => {
   await page.goto("/");
 
   await expect(page.getByRole("heading", { name: "David Duong" })).toBeVisible();
-  await expect(page.getByRole("link", { name: "See experience" })).toBeVisible();
-  await expect(page.getByRole("link", { name: "Resume" })).toHaveAttribute("href", /David_Duong_Resume\.pdf|blob\.vercel-storage\.com/);
-  await expect(page.getByRole("link", { name: "Resume" })).toHaveAttribute("target", "_blank");
+  await expect(page.getByRole("link", { name: "View experience" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Resume", exact: true })).toHaveAttribute("href", /David_Duong_Resume\.pdf|blob\.vercel-storage\.com/);
+  await expect(page.getByRole("link", { name: "Resume", exact: true })).toHaveAttribute("target", "_blank");
   await expect(page.getByRole("heading", { name: "Experience" })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Tools I build with" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Skills" })).toBeVisible();
 
   const canvas = page.locator(".signal-canvas canvas");
   await expect(canvas).toBeVisible();

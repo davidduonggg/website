@@ -6,51 +6,64 @@ import { SignalField } from "@/components/signal-field";
 
 const experience = [
   {
-    title: "Ticketmaster",
+    company: "Ticketmaster",
     role: "Software Engineer Intern",
-    meta: "September 2026 - December 2026",
-    description: "Incoming on the Cassandra infrastructure team, Fall 2026.",
+    dates: "October 2026 - Present",
+    details: ["Interning on the Cassandra infrastructure team."],
   },
   {
-    title: "First American",
+    company: "First American",
     role: "Data Engineer Intern",
-    meta: "June 2026 - August 2026",
-    description:
-      "Building data validation and replication systems across React, FastAPI, PostgreSQL, DuckDB, BigQuery, Pub/Sub, Dataflow, and Cloud Run.",
+    dates: "June 2026 - August 2026",
+    details: [
+      "Developed a validation dashboard with React, FastAPI, and PostgreSQL to compare tables across Databricks, BigQuery, and SQL Server.",
+      "Built cross-platform validation services with Arrow, Parquet, Spark, and DuckDB that processed 100M+ row datasets in five minutes.",
+      "Architected a persisted PostgreSQL job queue to orchestrate concurrent validation jobs reliably.",
+    ],
   },
   {
-    title: "Temco Logistics",
-    role: "Data Engineer (BI) Intern",
-    meta: "March 2026 - June 2026",
-    description:
-      "Migrated legacy records with Python and Spark in Databricks, refactored ingestion services, optimized runtimes, and added CI test coverage.",
+    company: "Temco Logistics",
+    role: "Data Engineer Intern",
+    dates: "March 2026 - June 2026",
+    details: [
+      "Engineered a Python and Spark pipeline in Databricks to migrate 50,000+ legacy records to cloud storage.",
+      "Refactored a pandas ingestion service to Spark, cutting the codebase by more than 50% with Azure Key Vault and Blob Storage integration.",
+      "Reduced Spark transformation runtimes from over two hours to 30 minutes through multithreading and partitioning.",
+    ],
   },
 ];
 
 const skills = [
   {
     group: "Languages",
-    items: ["Python", "Java", "Go", "SQL", "TypeScript", "JavaScript", "Bash"],
+    items: ["Python", "Go", "SQL", "TypeScript", "Java", "Bash"],
   },
   {
-    group: "Data",
-    items: ["Apache Spark", "Apache Arrow", "Delta Lake", "Parquet", "PostgreSQL", "DuckDB", "SQL Server"],
+    group: "Data systems",
+    items: ["Spark", "Arrow", "PostgreSQL", "Delta Lake", "Parquet", "DuckDB", "SQL Server", "PyTorch"],
   },
   {
     group: "Frameworks",
     items: ["FastAPI", "Node.js", "Express.js", "React"],
   },
   {
-    group: "Cloud",
-    items: ["Databricks", "GCP Pub/Sub", "Cloud Run", "Dataflow", "BigQuery", "Azure Blob Storage", "Azure SQL Server", "Azure Key Vault"],
+    group: "Platforms",
+    items: [
+      "Databricks",
+      "Lakebase",
+      "Lakeflow",
+      "Foundation Models",
+      "GCP Cloud Storage",
+      "BigQuery",
+      "GCP Agent Platform",
+      "Azure Blob Storage",
+      "Azure SQL Server",
+      "Azure Key Vault",
+    ],
   },
   {
-    group: "Tools",
+    group: "Developer tools",
     items: ["Git", "GitHub Actions", "Docker", "Linux", "Cursor", "Codex"],
-  },
-  {
-    group: "ML",
-    items: ["PyTorch"],
   },
 ];
 
@@ -119,9 +132,9 @@ export function HomePage({ resumeHref = "/resume" }: { resumeHref?: string }) {
 
     animate(".reveal", {
       opacity: [0, 1],
-      translateY: [22, 0],
-      duration: 900,
-      delay: stagger(90, { start: 120 }),
+      translateY: [16, 0],
+      duration: 760,
+      delay: stagger(65, { start: 80 }),
       ease: "outCubic",
     });
   }, []);
@@ -129,10 +142,11 @@ export function HomePage({ resumeHref = "/resume" }: { resumeHref?: string }) {
   return (
     <main className="site-shell">
       <SignalField />
+
       <nav className="site-nav" aria-label="Primary navigation">
         <div className="nav-inner">
           <a className="brand" href="#top" aria-label="David Duong home">
-            <span>David Duong</span>
+            David Duong
           </a>
           <div className="nav-links">
             <a href="#experience">Experience</a>
@@ -147,45 +161,54 @@ export function HomePage({ resumeHref = "/resume" }: { resumeHref?: string }) {
 
       <section className="hero" id="top">
         <div className="hero-content">
+          <p className="hero-status reveal">
+            <span aria-hidden="true" /> Software Engineer Intern at Ticketmaster
+          </p>
           <h1 className="reveal">David Duong</h1>
           <p className="hero-copy reveal">
             I build backend systems, infrastructure, and data platforms.
           </p>
+          <p className="hero-education reveal">
+            B.S. Computer Science, UC Irvine <span aria-hidden="true">/</span> December 2027
+          </p>
           <div className="hero-actions reveal">
-            <a className="action primary" href="#experience">
-              See experience
+            <a href="#experience">
+              View experience <span aria-hidden="true">-&gt;</span>
             </a>
-            <a className="action" href="#contact">
-              Get in touch
+            <a href={resumeHref} target="_blank" rel="noreferrer">
+              Open resume <span aria-hidden="true">-&gt;</span>
             </a>
           </div>
-        </div>
-        <div className="below-fold-hint" aria-hidden="true">
-          <span />
-          Scroll
         </div>
       </section>
 
       <div className="content-backdrop">
-        <section className="section" id="experience">
+        <section className="section experience-section" id="experience">
           <div className="section-header reveal">
-            <div>
-              <p className="eyebrow">Experience</p>
-              <h2>Experience</h2>
-            </div>
+            <p className="section-index">01</p>
+            <h2>Experience</h2>
+            <p className="section-intro">
+              Data infrastructure and backend work across high-volume validation, distributed systems, and cloud platforms.
+            </p>
           </div>
 
           <div className="timeline">
             {experience.map((item) => (
-              <article className="timeline-item reveal" key={item.title}>
+              <article className="timeline-item reveal" key={item.company}>
+                <p className="experience-date">{item.dates}</p>
                 <div className="timeline-marker" aria-hidden="true">
                   <span />
                 </div>
                 <div className="timeline-content">
-                  <p className="experience-date">{item.meta}</p>
-                  <h3>{item.title}</h3>
-                  <p className="experience-role">{item.role}</p>
-                  <p>{item.description}</p>
+                  <div className="experience-heading">
+                    <h3>{item.company}</h3>
+                    <p className="experience-role">{item.role}</p>
+                  </div>
+                  <ul>
+                    {item.details.map((detail) => (
+                      <li key={detail}>{detail}</li>
+                    ))}
+                  </ul>
                 </div>
               </article>
             ))}
@@ -194,24 +217,18 @@ export function HomePage({ resumeHref = "/resume" }: { resumeHref?: string }) {
 
         <section className="section" id="skills">
           <div className="section-header reveal">
-            <div>
-              <p className="eyebrow">Skills</p>
-              <h2>Tools I build with</h2>
-            </div>
+            <p className="section-index">02</p>
+            <h2>Skills</h2>
             <p className="section-intro">
-              Languages, frameworks, data systems, cloud platforms, and developer tools from my current technical stack.
+              The languages, data systems, and cloud tooling I use to ship reliable infrastructure.
             </p>
           </div>
 
           <div className="skills-list">
             {skills.map((skillGroup) => (
-              <section className="skill-group reveal" key={skillGroup.group} aria-labelledby={`skill-${skillGroup.group.toLowerCase()}`}>
-                <h3 id={`skill-${skillGroup.group.toLowerCase()}`}>{skillGroup.group}</h3>
-                <div>
-                  {skillGroup.items.map((skill) => (
-                    <span key={skill}>{skill}</span>
-                  ))}
-                </div>
+              <section className="skill-group reveal" key={skillGroup.group} aria-labelledby={`skill-${skillGroup.group.toLowerCase().replaceAll(" ", "-")}`}>
+                <h3 id={`skill-${skillGroup.group.toLowerCase().replaceAll(" ", "-")}`}>{skillGroup.group}</h3>
+                <p>{skillGroup.items.join(", ")}</p>
               </section>
             ))}
           </div>
@@ -219,7 +236,10 @@ export function HomePage({ resumeHref = "/resume" }: { resumeHref?: string }) {
 
         <section className="section contact" id="contact">
           <div className="contact-panel reveal">
-            <h2>Let&apos;s work together!</h2>
+            <div>
+              <p className="section-index">03</p>
+              <h2>Let&apos;s work together.</h2>
+            </div>
             <div className="contact-links">
               {contactLinks.map((link) => (
                 <a key={link.label} href={link.href} aria-label={link.label} title={link.label}>

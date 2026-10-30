@@ -1,7 +1,8 @@
 import { get } from "@vercel/blob";
 
-export const FALLBACK_RESUME_URL = "/David_Duong_Resume.pdf";
+export const FALLBACK_RESUME_URL = "/David_Duong_Resume.pdf?v=2026-10-15";
 export const LATEST_RESUME_PATH = "resume/latest.json";
+const FALLBACK_RESUME_UPDATED_AT = Date.parse("2026-10-15T16:38:59.000Z");
 
 export type ResumeMetadata = {
   url: string;
@@ -54,8 +55,22 @@ export async function getLatestResume() {
   }
 }
 
+export function shouldUseUploadedResume(latestResume: ResumeMetadata | null) {
+  if (!latestResume) {
+    return false;
+  }
+
+  const uploadedAt = Date.parse(latestResume.uploadedAt);
+
+  return Number.isFinite(uploadedAt) && uploadedAt > FALLBACK_RESUME_UPDATED_AT;
+}
+
 export async function getResumeTarget() {
   const latestResume = await getLatestResume();
 
-  return latestResume?.url ?? FALLBACK_RESUME_URL;
+  if (shouldUseUploadedResume(latestResume) && latestResume) {
+    return latestResume.url;
+  }
+
+  return FALLBACK_RESUME_URL;
 }
