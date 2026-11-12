@@ -1,8 +1,8 @@
 import { get } from "@vercel/blob";
 
-export const FALLBACK_RESUME_URL = "/David_Duong_Resume.pdf?v=2026-10-15";
+export const FALLBACK_RESUME_URL = "/David_Duong_Resume.pdf?v=2026-11-12";
 export const LATEST_RESUME_PATH = "resume/latest.json";
-const FALLBACK_RESUME_UPDATED_AT = Date.parse("2026-10-15T16:38:59.000Z");
+const FALLBACK_RESUME_UPDATED_AT = Date.parse("2026-11-12T23:31:41.917Z");
 
 export type ResumeMetadata = {
   url: string;

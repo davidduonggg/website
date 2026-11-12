@@ -364,6 +364,22 @@ select {
   line-height: 1.45;
 }
 
+.projects-list {
+  border-top: 1px solid var(--line);
+}
+
+.project-item {
+  max-width: none;
+  padding: 36px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.project-tools {
+  margin: 14px 0 20px;
+  color: var(--quiet);
+  font-size: 0.82rem;
+}
+
 .skills-list {
   display: grid;
   border-top: 1px solid var(--line);
@@ -411,6 +427,14 @@ select {
   font-size: 2.7rem;
   font-weight: 560;
   line-height: 1;
+}
+
+.personal-note {
+  max-width: 600px;
+  margin: 20px 0 0;
+  color: var(--muted);
+  font-size: 0.94rem;
+  line-height: 1.65;
 }
 
 .contact-links {
@@ -652,6 +676,13 @@ select {
 }
 
 @media (max-width: 860px) {
+  .signal-canvas {
+    /* The large viewport stays fixed while mobile browser chrome expands/collapses. */
+    bottom: auto;
+    height: 100vh;
+    height: 100lvh;
+  }
+
   html {
     scroll-padding-top: 64px;
   }
@@ -670,7 +701,6 @@ select {
 
   .hero {
     min-height: 94svh;
-    min-height: 94dvh;
     padding-top: 118px;
     padding-bottom: 72px;
   }

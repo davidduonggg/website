@@ -25,7 +25,7 @@ describe("HomePage", () => {
     );
     expect(screen.getByRole("link", { name: "Email" })).toHaveAttribute(
       "href",
-      "mailto:davidduonggg@gmail.com",
+      "mailto:dduong7@uci.edu",
     );
     expect(screen.getByRole("link", { name: "LinkedIn" })).toHaveAttribute(
       "href",
@@ -39,22 +39,31 @@ describe("HomePage", () => {
     expect(screen.getByRole("heading", { name: "Ticketmaster" })).toBeInTheDocument();
     expect(screen.getByText("Software Engineer Intern")).toBeInTheDocument();
     expect(screen.getByText("October 2026 - Present")).toBeInTheDocument();
-    expect(screen.getByText("Interning on the Cassandra infrastructure team.")).toBeInTheDocument();
+    expect(screen.getByText(/self-service platform for database infrastructure provisioning/)).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "First American" })).toBeInTheDocument();
     expect(screen.getByText("June 2026 - August 2026")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Temco Logistics" })).toBeInTheDocument();
     expect(screen.getAllByText("Data Engineer Intern")).toHaveLength(2);
     expect(screen.getByText("March 2026 - June 2026")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "CareTech UCI" })).toBeInTheDocument();
     expect(screen.queryByText("24M+ row comparisons")).not.toBeInTheDocument();
+  });
+
+  it("shows projects from the updated resume", () => {
+    render(<HomePage />);
+    expect(screen.getByRole("heading", { name: "Sentiment Data Pipeline" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "NASA Kibo Robot Programming Challenge" })).toBeInTheDocument();
+    expect(screen.getByText(/6th out of 55 teams/)).toBeInTheDocument();
+    expect(screen.getByText(/GPA 3.92/)).toBeInTheDocument();
   });
 
   it("shows technical skills", () => {
     render(<HomePage />);
 
     expect(screen.getByRole("heading", { name: "Languages" })).toBeInTheDocument();
-    expect(screen.getByText(/Python, Go, SQL/)).toBeInTheDocument();
-    expect(screen.getByText(/Spark, Arrow, PostgreSQL/)).toBeInTheDocument();
+    expect(screen.getByText(/Python, Go, JavaScript, Java, SQL/)).toBeInTheDocument();
+    expect(screen.getByText(/Spark, Arrow, PostgreSQL, MySQL/)).toBeInTheDocument();
     expect(screen.getByText(/Databricks, Lakebase, Lakeflow/)).toBeInTheDocument();
-    expect(screen.getByText(/Git, GitHub Actions, Docker/)).toBeInTheDocument();
+    expect(screen.getByText(/Git, GitHub Actions, GitLab CI\/CD, Docker/)).toBeInTheDocument();
   });
 });

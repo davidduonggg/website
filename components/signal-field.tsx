@@ -75,6 +75,7 @@ export function SignalField() {
     }
 
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const touchDevice = window.matchMedia("(pointer: coarse)").matches;
     const scene = new THREE.Scene();
     scene.fog = new THREE.FogExp2(0x000000, 0.011);
 
@@ -83,8 +84,7 @@ export function SignalField() {
 
     const renderer = new THREE.WebGLRenderer({
       alpha: true,
-      antialias: true,
-      preserveDrawingBuffer: true,
+      antialias: !touchDevice,
       powerPreference: "high-performance",
     });
     renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -325,8 +325,17 @@ export function SignalField() {
     let lastRenderTime = 0;
     let running = true;
 
+    let currentWidth = 0;
+    let currentHeight = 0;
+
     const resize = () => {
       const { width, height } = host.getBoundingClientRect();
+      // Avoid reallocating the drawing buffer for duplicate observer notifications.
+      if (width === currentWidth && height === currentHeight) {
+        return;
+      }
+      currentWidth = width;
+      currentHeight = height;
       const maxPixelRatio = width < 720 ? 1.25 : 1.5;
       const nextPixelRatio = Math.min(window.devicePixelRatio, maxPixelRatio);
 
@@ -339,12 +348,15 @@ export function SignalField() {
       camera.aspect = width / Math.max(height, 1);
       camera.position.z = width < 720 ? 22.5 : 19.5;
       root.scale.setScalar(width < 720 ? 0.43 : height < 800 ? 0.98 : 0.82);
-      root.position.x = width < 720 ? 3.15 : width < 1024 ? 3.8 : 4.2;
-      root.position.y = width < 720 ? 2.68 : 0.18;
+      root.position.x = width < 720 ? 0 : width < 1024 ? 3.8 : 4.2;
+      root.position.y = width < 720 ? 3.7 : 0.18;
       camera.updateProjectionMatrix();
     };
 
     const move = (event: PointerEvent) => {
+      if (event.pointerType !== "mouse" || touchDevice) {
+        return;
+      }
       pointer.x = event.clientX / Math.max(window.innerWidth, 1) - 0.5;
       pointer.y = event.clientY / Math.max(window.innerHeight, 1) - 0.5;
     };
@@ -355,7 +367,7 @@ export function SignalField() {
       }
 
       const isPastHero = window.scrollY > window.innerHeight * 0.82;
-      const targetFrameDuration = isPastHero ? 1000 / 30 : 1000 / 60;
+      const targetFrameDuration = touchDevice || isPastHero ? 1000 / 30 : 1000 / 60;
       const elapsed = timestamp - lastRenderTime;
 
       if (!reducedMotion && lastRenderTime > 0 && elapsed < targetFrameDuration - 1) {
