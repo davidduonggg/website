@@ -43,27 +43,6 @@ const experience = [
   },
 ];
 
-const projects = [
-  {
-    name: "Sentiment Data Pipeline",
-    tools: "Go, Python, SQL",
-    details: [
-      "Engineered Go and Python services to ingest and classify 1,000+ data points per second.",
-      "Improved ingestion performance by over 80% using concurrent worker pools in Go.",
-      "Classified 5,000+ data points by integrating a Hugging Face transformers model.",
-    ],
-  },
-  {
-    name: "NASA Kibo Robot Programming Challenge",
-    tools: "Java, Python, PyTorch",
-    details: [
-      "Ranked 6th out of 55 teams nationally with an Android application that autonomously commanded NASA’s Astrobee robot to capture and classify images using NASA APIs and OpenCV.",
-      "Built a multithreaded Java pipeline to parallelize image capture and robot movement.",
-      "Generated synthetic training data with Python, PyTorch, and Albumentations, achieving over 85% accuracy on a YOLOv5 model.",
-    ],
-  },
-];
-
 const skills = [
   {
     group: "Languages",
@@ -205,7 +184,6 @@ export function HomePage({ resumeHref = "/resume" }: { resumeHref?: string }) {
           </a>
           <div className="nav-links">
             <a href="#experience">Experience</a>
-            <a href="#projects">Projects</a>
             <a href="#skills">Skills</a>
             <a className="resume-link" href={resumeHref} target="_blank" rel="noreferrer">
               Resume
@@ -272,30 +250,9 @@ export function HomePage({ resumeHref = "/resume" }: { resumeHref?: string }) {
           </div>
         </section>
 
-        <section className="section" id="projects">
-          <div className="section-header reveal">
-            <p className="section-index">02</p>
-            <h2>Projects</h2>
-            <p className="section-intro">
-              Concurrent data pipelines and autonomous robotics, built from ingestion to inference.
-            </p>
-          </div>
-          <div className="projects-list">
-            {projects.map((project) => (
-              <article className="project-item timeline-content reveal" key={project.name}>
-                <h3>{project.name}</h3>
-                <p className="project-tools">{project.tools}</p>
-                <ul>
-                  {project.details.map((detail) => <li key={detail}>{detail}</li>)}
-                </ul>
-              </article>
-            ))}
-          </div>
-        </section>
-
         <section className="section" id="skills">
           <div className="section-header reveal">
-            <p className="section-index">03</p>
+            <p className="section-index">02</p>
             <h2>Skills</h2>
             <p className="section-intro">
               The languages, data systems, and cloud tooling I use to ship reliable infrastructure.
@@ -315,7 +272,7 @@ export function HomePage({ resumeHref = "/resume" }: { resumeHref?: string }) {
         <section className="section contact" id="contact">
           <div className="contact-panel reveal">
             <div>
-              <p className="section-index">04</p>
+              <p className="section-index">03</p>
               <h2>Let&apos;s work together.</h2>
               <p className="personal-note">
                 I&apos;m a computer science student at UC Irvine building database infrastructure at Ticketmaster.

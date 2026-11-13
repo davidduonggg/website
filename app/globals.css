@@ -364,22 +364,6 @@ select {
   line-height: 1.45;
 }
 
-.projects-list {
-  border-top: 1px solid var(--line);
-}
-
-.project-item {
-  max-width: none;
-  padding: 36px 0;
-  border-bottom: 1px solid var(--line);
-}
-
-.project-tools {
-  margin: 14px 0 20px;
-  color: var(--quiet);
-  font-size: 0.82rem;
-}
-
 .skills-list {
   display: grid;
   border-top: 1px solid var(--line);

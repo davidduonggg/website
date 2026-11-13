@@ -49,14 +49,6 @@ describe("HomePage", () => {
     expect(screen.queryByText("24M+ row comparisons")).not.toBeInTheDocument();
   });
 
-  it("shows projects from the updated resume", () => {
-    render(<HomePage />);
-    expect(screen.getByRole("heading", { name: "Sentiment Data Pipeline" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "NASA Kibo Robot Programming Challenge" })).toBeInTheDocument();
-    expect(screen.getByText(/6th out of 55 teams/)).toBeInTheDocument();
-    expect(screen.getByText(/GPA 3.92/)).toBeInTheDocument();
-  });
-
   it("shows technical skills", () => {
     render(<HomePage />);
 
