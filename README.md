@@ -36,18 +36,27 @@ npm run build
 npm run e2e
 ```
 
-## Deployment
+## Build and Deployment
 
-Vercel CLI is used for deployment checks and deploy commands:
+Vercel is responsible for production builds and deployments through its Git integration with this repository. Connect the repository to the `personal-website` Vercel project and set `main` as the production branch.
+
+- Pushes to `main` trigger a production build and deployment on Vercel.
+- Pull requests receive Vercel preview deployments.
+- Configure build settings and environment variables in the Vercel project. The Next.js build command is `npm run build`.
+- Check Vercel's Deployments page for build logs and deployment status. A production deployment is live when its status is Ready and it is assigned to the production domain.
+
+GitHub Actions is used only for validation (typecheck, lint, unit tests, and Playwright E2E). Deployment does not depend on GitHub Actions. The separate GitHub Actions Vercel deployment workflow has been removed to avoid duplicate deployment paths.
+
+To inspect deployments with the Vercel CLI:
 
 ```bash
-npm run vercel:pull
-npm run vercel:build
-npm run vercel:deploy:preview
-npm run vercel:deploy:production
+vercel login
+vercel link
+vercel list personal-website --environment production
+vercel inspect <deployment-url>
 ```
 
-GitHub Actions includes CI for typecheck, lint, unit tests, build, and Playwright E2E. Vercel preview and production deploy jobs run when `VERCEL_TOKEN`, `VERCEL_ORG_ID`, and `VERCEL_PROJECT_ID` are configured as repository secrets.
+When a manual deployment is needed, run `vercel` for a preview or `vercel --prod` for production. These commands upload the source and let Vercel build it. Local `npm run build` remains available for verification; a local prebuilt deployment is not required.
 
 ## Resume Uploads
 
